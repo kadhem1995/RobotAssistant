@@ -6,8 +6,9 @@ description
 """
 import face_recognition
 import numpy as np
-import json
+import codecs, json
 import cv2
+
 class face_rec :
     """
     description of class
@@ -25,9 +26,16 @@ class face_rec :
         config = json.load(config_file)
         self.known_faces_names = []
         self.known_faces_encodings = []
-        for name in config :
+        f = open("encoding.json",'r')
+        data = json.load(f)
+        for name in data.keys():
+            self.known_faces_encodings.append(np.asarray(data[name]))
             self.known_faces_names.append(name)
-            self.known_faces_encodings.append(self.face_encode(name, config[name]))
+    def face_to_file(self,image):
+        '''
+        to do
+        '''
+        
     def face_encode(self, name, image):
         '''
         '''
@@ -49,11 +57,3 @@ class face_rec :
                     name = self.known_faces_names[i]
                 face_names.append(name)
             return face_names
-
-face = face_rec('/home/imed/Desktop/work/RobotAssistant/config/face_config.json')
-cam = cv2.VideoCapture(2)
-while True :
-    ret, frame = cam.read()
-    names = face.face_rec(frame)
-    print("i see :",names)
-    
