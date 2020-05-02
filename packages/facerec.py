@@ -27,15 +27,22 @@ class face_rec :
         self.known_faces_names = []
         self.known_faces_encodings = []
         f = open("encoding.json",'r')
-        data = json.load(f)
-        for name in data.keys():
-            self.known_faces_encodings.append(np.asarray(data[name]))
+        self.data = json.load(f)
+        f.close()
+        for name in self.data.keys():
+            self.known_faces_encodings.append(np.asarray(self.data[name]))
             self.known_faces_names.append(name)
-    def face_to_file(self,image):
-        '''
+    def face_to_file(self, image_path, nom):
+        ''' 
         to do
         '''
-        
+        images = face_recognition.load_image_file(image_path) 
+        image_encoding = face_recognition.face_encodings(images)[0]
+        print(image_encoding)
+        self.data[nom] = image_encoding.tolist()
+        f = open("encoding.json",'w')
+        json.dump(data,f)
+        f.close()
     def face_encode(self, name, image):
         '''
         '''
