@@ -11,6 +11,6 @@ imed_encoding = face_recognition.face_encodings(image)[0]
 print(kadhem_encoding)
 data = {}
 data["kadhem"] = kadhem_encoding.tolist()
-data["imed"] = imed_encoding.tolist()
+#data["imed"] = imed_encoding.tolist()
 f = open("encoding.json",'w')
 json.dump(data,f)

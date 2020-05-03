@@ -40,8 +40,10 @@ class face_rec :
         image_encoding = face_recognition.face_encodings(images)[0]
         print(image_encoding)
         self.data[nom] = image_encoding.tolist()
+        self.known_faces_encodings.append(np.asarray(self.data[name]))
+        self.known_faces_names.append(name)
         f = open("encoding.json",'w')
-        json.dump(data,f)
+        json.dump(self.data,f)
         f.close()
     def face_encode(self, name, image):
         '''
@@ -63,4 +65,5 @@ class face_rec :
                 if matches[i]:
                     name = self.known_faces_names[i]
                 face_names.append(name)
-            return face_names
+            
+        return face_names
