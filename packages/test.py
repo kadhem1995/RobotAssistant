@@ -5,7 +5,7 @@ from threading import Thread
 class main :
     def __init__(self):
         self.face = face_rec("../config/face_config.json")
-        self.cam = cv2.VideoCapture(0)
+        self.cam = cv2.VideoCapture("http://192.168.1.176:8080/video/mjpeg")
     def Main(self):
         while True :
             ret, frame = self.cam.read()
