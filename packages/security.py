@@ -10,47 +10,42 @@ class Security :
         to do
         '''
         config_file = open(config_path,'r')
-        config_contact = json.load(config_file)
-        self.email ="kadhemanaibi0@gmail.com"
-        self.num_tel ="+21652417178"
-        self.account_sid = 'AC11ba230f617be5f89cf842008d12554a'
-        self.auth_token = 'c74816f583c085c53daae27bfecf9733'
-        self.num='+18452445557'
-        slef.msg_sms="helllllo"
-        slef.msg_email="helllllo"
-        self.path_file=""
-        k = open("contact.json",'w')
-        json.dump(self.data,k)
-        k.close()
-    def send_sms(self, msg, destination_num):
+        self.config = json.load(config_file)
+        config_file.close()
+        self.security_email = self.config["security_email"]
+        self.security_num =self.config["security_num"]
+        self.account_sid = self.config["twilio_sid"]
+        self.auth_token = self.config["twilio_token"]
+        self.twilio_num = self.config["twilio_num"]
+        try :
+            self.client = Client(self.account_sid, self.auth_token)
+        except :
+            print("failed to connect to twilio account please check your connection or your configuration")
+    def send_sms(self, msg, destination_num = None):
         '''
         to do
-        '''
-        
-        
-        client = Client(self.account_sid, self.auth_token)
-
-        message = client.messages \
+        ''' 
+        if destination_num is None :
+            destination_num = self.security_num
+        message = self.client.messages \
             .create(
-                 body = self.msg_sms,
-                 from_= self.num_tel ,
-                 to= self.num
+                 body = msg,
+                 from_= self.twilio_num ,
+                 to= destination_num
              )
-
         print(message.sid)
-    def send_email(self):
+    def send_email(self, body, destination_email = None):
         '''
         to do
         '''
-         
-        msg = self.meg_email
-        destination_email = self.email
-        os.system("echo " + msg + " | msmtp " + destination )
-    def send_file(self,parametre):
+        if destination_email is None :
+            destination_email = self.security_email
+        os.system("echo " + body + " | msmtp " + destination_email )
+    def send_file(self, msg, file_path, destination_email = None):
         '''
         to do
         '''
-        path = self.path_file
-        destination_email = self.email
-        os.system(" mpack -s “Attachments with mpack” "+path  + destination )
+        if destination_email is None :
+            destination_email = self.security_email
+        os.system(" mpack -s " + msg + ' '  + file_path + ' ' + destination_email )
         
